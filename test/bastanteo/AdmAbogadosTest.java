@@ -11,7 +11,7 @@ public class AdmAbogadosTest {
 	String numeroDocumento="41888704";
 	String nombres="Robert Eduardo";
 	String apellidos="Wong Villar";
-	String cargoEmpresa="Administrator";
+	String cargoEmpresa="Analista Sistema";
 	String grupoBastanteo="A";	
 		
 	AdmAbogados oAdmAbogados=new AdmAbogados();
