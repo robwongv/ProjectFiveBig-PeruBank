@@ -79,7 +79,7 @@ public class AdmAbogados {
 		boolean existe = false;
 		for (Representate representate : listRepresentate)
 			if (representate.getTipoDocumento().equals(tipoDocumento)
-					|| representate.getNumeroDocumento()
+					&& representate.getNumeroDocumento()
 							.equals(numeroDocumento))
 				existe = true;
 		return existe;

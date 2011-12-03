@@ -1,5 +1,6 @@
 package bastanteo;
 
+
 public class ClienteException extends Exception {
 
 	
