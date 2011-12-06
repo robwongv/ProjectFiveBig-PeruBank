@@ -11,7 +11,7 @@ import org.junit.Test;
 public class AdmBastanteoTest {
 
 	List<Poder> poderes;
-	List<Grupo> gruposR;
+	List<Grupo> grupos;
 	AdmPoderes admPoder;
 	AdmAbogados admAbogados;
 	AdmClientes admClientes;
@@ -21,22 +21,22 @@ public class AdmBastanteoTest {
 	@Before
 	public void cargarData() throws PoderException, RepresentanteException,
 			ClienteException, GrupoException {
+		//Carga de datos: Esto se ejecutara antes que todo, permitiendome tener
+		//registrados grupos,clientes,representantes y poderes
 		
-	
-		//Registrar Grupos
-		String codGrupo="GR01";
-		String nomGrupo="A";
-		AdmGrupos admGrupos = new AdmGrupos();
-		admGrupos.registrarGrupo(codGrupo,nomGrupo);
-		
-		codGrupo="GR02";
-		nomGrupo="B";
-		admGrupos.registrarGrupo(codGrupo,nomGrupo);
-		
-		codGrupo="GR03";
-		nomGrupo="C";
-		admGrupos.registrarGrupo(codGrupo,nomGrupo);
-		
+		// Registrar Grupos
+		String codGrupo = "GR01";
+		String nomGrupo = "A";
+		admGrupos = new AdmGrupos();
+		admGrupos.registrarGrupo(codGrupo, nomGrupo);
+
+		codGrupo = "GR02";
+		nomGrupo = "B";
+		admGrupos.registrarGrupo(codGrupo, nomGrupo);
+
+		codGrupo = "GR03";
+		nomGrupo = "C";
+		admGrupos.registrarGrupo(codGrupo, nomGrupo);
 
 		// Registrando Clientes
 		String ruc = "12232720907";
@@ -45,13 +45,12 @@ public class AdmBastanteoTest {
 		String fechaInicio = "01/01/2010";
 		String tipoEmpresa = "SAC";
 		int empleados = 10;
-		AdmClientes admClientes = new AdmClientes();
+		admClientes = new AdmClientes();
 
 		// ejecutar
 		admClientes.registrarCliente(codigo, ruc, razonSocial, fechaInicio,
 				tipoEmpresa, empleados);
 
-		// Registrando Clientes
 		ruc = "12232720908";
 		codigo = "CL002";
 		razonSocial = "Saga Falabella";
@@ -117,20 +116,20 @@ public class AdmBastanteoTest {
 		nombrePoder = "Retiro en efectivo";
 		tipoProductoPoder = "Pasivo";
 		admPoder.registrarPoder(codigoPoder, nombrePoder, tipoProductoPoder);
-		System.out.println("CARGO DATA");
+		
 
 	}
-
+	
+	
+	//Test 1: Si ingreso datos deberia registrar bastanteo exitosamente
 	@Test
 	public void siIngresoDatosDeberiaRegistrarBastanteo()
-			throws ClienteException, PoderException, GrupoException {
-		
-			
+			throws ClienteException, PoderException, GrupoException, BastanteoException {
+
 		poderes = new ArrayList<Poder>();
-		//gruposR=new ArrayList<Grupo>();
-		
-		
-		//Asignando poderes
+		grupos = new ArrayList<Grupo>();
+
+		// Asignando poderes
 		String codigoPoder = "CHCO";
 		Poder poder = admPoder.buscarPoder(codigoPoder);
 		poderes.add(poder);
@@ -138,37 +137,102 @@ public class AdmBastanteoTest {
 		codigoPoder = "EFRE";
 		poder = admPoder.buscarPoder(codigoPoder);
 		poderes.add(poder);
-		
-			
-		//Asignando combinacion de grupos 
+
+		// Asignando combinacion de grupos
 		String grupoCodCombinacion = "GR02";
-		Grupo grupo5 = admGrupos.buscarGrupo(grupoCodCombinacion);
-		//gruposR.add(grupo);
-		
-			
+		Grupo grupo = admGrupos.buscarGrupo(grupoCodCombinacion);
+		grupos.add(grupo);
+
 		grupoCodCombinacion = "GR03";
-		grupo5 = admGrupos.buscarGrupo(grupoCodCombinacion);
-		//gruposR.add(grupo);
-		
-	
-		
-		//Asignando datos adicionales
-		String codigoBastanteo="B0001";
+		grupo = admGrupos.buscarGrupo(grupoCodCombinacion);
+		grupos.add(grupo);
+
+		// Asignando datos adicionales
+		String codigoBastanteo = "B0001";
 		String grupoBastanteo = "A";
 		String codCliente = "CL001";
-		String tipoIntervencion="A sola firma";
-		double importe=1000.00;
-		String fechaVencimiento="28/11/2011";
-		
-		admBastanteo=new AdmBastanteo();
-		
-		admBastanteo.registrarBastanteo(codigoBastanteo,poderes, grupoBastanteo, codCliente, tipoIntervencion, gruposR, importe, fechaVencimiento);
-		
+		String tipoIntervencion = "A sola firma";
+		double importe = 1000.00;
+		String fechaVencimiento = "28/11/2011";
+
+		admBastanteo = new AdmBastanteo();
+
+		admBastanteo.registrarBastanteo(codigoBastanteo, poderes,
+				grupoBastanteo, codCliente, tipoIntervencion, grupos, importe,
+				fechaVencimiento);
+
 		Bastanteo bastanteo = admBastanteo.buscarBastanteo(codigoBastanteo);
-	    // Verificar
-	   // assertNotNull(bastanteo);
+		// Verificar
+		assertNotNull(bastanteo);
+
+	}
+	
+	//Test 2:Si ingreso bastanteo duplicado con los datos que ya tenga el mismo CodigoBastanteo,
+	//poder,grupo bastanteo,cliente,tipo intervencion,grupo combinacion.
+	//Se espera excepcion 
+	@Test(expected = BastanteoException.class)
+	public void noDeberiaRegistrarBastanteosDuplicados() throws BastanteoException {
+
+		poderes = new ArrayList<Poder>();
+		grupos = new ArrayList<Grupo>();
+
+		// Asignando poderes
+		String codigoPoder = "CHCO";
+		Poder poder = admPoder.buscarPoder(codigoPoder);
+		poderes.add(poder);
+
+		codigoPoder = "EFRE";
+		poder = admPoder.buscarPoder(codigoPoder);
+		poderes.add(poder);
+
+		// Asignando combinacion de grupos
+		String grupoCodCombinacion = "GR02";
+		Grupo grupo = admGrupos.buscarGrupo(grupoCodCombinacion);
+		grupos.add(grupo);
+
+		grupoCodCombinacion = "GR03";
+		grupo = admGrupos.buscarGrupo(grupoCodCombinacion);
+		grupos.add(grupo);
+
+		// Asignando datos adicionales
+		String codigoBastanteo = "B0001";
+		String grupoBastanteo = "A";
+		String codCliente = "CL001";
+		String tipoIntervencion = "A sola firma";
+		double importe = 1000.00;
+		String fechaVencimiento = "28/11/2011";
+
+		admBastanteo = new AdmBastanteo();
+
+		admBastanteo.registrarBastanteo(codigoBastanteo, poderes,
+				grupoBastanteo, codCliente, tipoIntervencion, grupos, importe,
+				fechaVencimiento);
 		
+		admBastanteo.registrarBastanteo(codigoBastanteo, poderes,
+				grupoBastanteo, codCliente, tipoIntervencion, grupos, importe,
+				fechaVencimiento);
+	}
+	
+	//Test 3:Validar datos requeridos,se espera excepcion porque no se asigna poderes
+	@Test(expected = BastanteoException.class)
+	public void deberiaValidarDatosRequeridos() throws BastanteoException {
+		poderes = new ArrayList<Poder>();
+		grupos = new ArrayList<Grupo>();
 		
+
+		// Asignando datos adicionales
+				String codigoBastanteo = "B0001";
+				String grupoBastanteo = "A";
+				String codCliente = "CL001";
+				String tipoIntervencion = "A sola firma";
+				double importe = 1000.00;
+				String fechaVencimiento = "28/11/2011";
+		
+		admBastanteo = new AdmBastanteo();
+
+		admBastanteo.registrarBastanteo(codigoBastanteo, poderes,
+				grupoBastanteo, codCliente, tipoIntervencion, grupos, importe,
+				fechaVencimiento);
 	}
 
 }

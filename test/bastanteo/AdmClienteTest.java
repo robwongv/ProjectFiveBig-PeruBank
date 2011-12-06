@@ -27,6 +27,7 @@ public class AdmClienteTest {
         Cliente cliente = adm.buscarCliente(codigo);
         // Verificar
         assertNotNull(cliente);
+        System.out.println("OK");
 	}
 	
 	
