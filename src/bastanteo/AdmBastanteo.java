@@ -1,6 +1,7 @@
 package bastanteo;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class AdmBastanteo {
@@ -13,7 +14,7 @@ public class AdmBastanteo {
 
 	public void registrarBastanteo(String codigoBastanteo, List<Poder> poderes,
 			String grupo, String codigoCliente, String tipoIntervencion,
-			List<Grupo> grupos, double importe, String fechaVencimiento)
+			List<Grupo> grupos, double importe, Calendar fechaVencimiento)
 			throws BastanteoException {
 
 		// validar datos
@@ -35,7 +36,7 @@ public class AdmBastanteo {
 
 	private void validarDuplicado(String codigoBastanteo, List<Poder> poderes,
 			String grupo, String codigoCliente, String tipoIntervencion,
-			List<Grupo> grupos, double importe, String fechaVencimiento)
+			List<Grupo> grupos, double importe, Calendar fechaVencimiento)
 			throws BastanteoException {
 
 		if (bastanteoExiste(codigoBastanteo, poderes, grupo, codigoCliente,
@@ -46,7 +47,7 @@ public class AdmBastanteo {
 	private boolean bastanteoExiste(String codigoBastanteo,
 			List<Poder> poderes, String grupo, String codigoCliente,
 			String tipoIntervencion, List<Grupo> grupos, double importe,
-			String fechaVencimiento) {
+			Calendar fechaVencimiento) {
 		boolean existe = false;
 		boolean existeDatoAdicionales = false;
 		boolean existePoder = false;
@@ -105,7 +106,7 @@ public class AdmBastanteo {
 
 	private void validarDatos(String codigoBastanteo, List<Poder> poderes,
 			String grupo, String codigoCliente, String tipoIntervencion,
-			List<Grupo> grupos, double importe, String fechaVencimiento)
+			List<Grupo> grupos, double importe, Calendar fechaVencimiento)
 			throws BastanteoException {
 		String mensaje = "";
 		if (codigoBastanteo.equals(""))
@@ -132,5 +133,71 @@ public class AdmBastanteo {
 			if (bastanteo.getCodigoBastanteo().equals(codigoBastanteo))
 				return bastanteo;
 		return null;
+	}
+
+	public Poder verificarPoderes(String ruc, String tipoDocumento,
+			String numeroDocumento, String codigoPoder, double importe) throws BastanteoException {
+		// TODO Auto-generated method stub
+		Poder oPoder = null;
+		Bastanteo oBastanteo = null;
+		AdmClientes admClientes = new AdmClientes();
+
+		Cliente cliente = admClientes.buscarClienteRuc(ruc);
+
+		AdmAbogados admAbogados = new AdmAbogados();
+		Representate representante = admAbogados.buscarRepresentante(
+				tipoDocumento, numeroDocumento, cliente.getCodigo());
+
+		for (Bastanteo bastanteo : bastanteos)
+			if (bastanteo.getCodigoCliente().equals(cliente.getCodigo()))
+				for (Poder poder : bastanteo.getPoderes())
+					if (poder.getCodigo().equals(codigoPoder)) {
+						oBastanteo = bastanteo;
+						oPoder = poder;
+					}
+		
+		//Fecha Actual del Sistema
+		Calendar fechaActual= Calendar.getInstance();
+		
+		if (oPoder==null){
+			throw new BastanteoException("No Existe Poder para el representante");
+		}		
+		if (fechaActual.after(oBastanteo.getFechaVencimiento())){
+			throw new BastanteoException("Poder con fecha vencida");
+		}
+		if (oBastanteo.getImporte()<importe){
+			throw new BastanteoException("El Importe es mayor al limite especificado en el bastanteo");
+		}
+		if(oPoder!=null)
+			return oPoder;
+		else
+			return null;
+	}
+
+	public List<Bastanteo> ConsultarPoderes(String ruc, String tipoDocumento,
+			String numeroDocumento, String grupoBastanteo) throws BastanteoException {
+		// TODO Auto-generated method stub
+		List<Bastanteo> olistbastanteos = new ArrayList<Bastanteo>();
+		AdmClientes admClientes = new AdmClientes();
+
+		Cliente cliente = admClientes.buscarClienteRuc(ruc);
+
+		AdmAbogados admAbogados = new AdmAbogados();
+		Representate representante = admAbogados.buscarRepresentante(
+				tipoDocumento, numeroDocumento, cliente.getCodigo());
+
+		for (Bastanteo bastanteo : bastanteos)
+			if (bastanteo.getCodigoCliente().equals(cliente.getCodigo()) 
+					&& bastanteo.getGrupo().equals(grupoBastanteo)) 
+				olistbastanteos.add(bastanteo);
+		
+		if (olistbastanteos==null)
+			throw new BastanteoException("No existe resultados para su busqueda");
+		
+		
+		if(olistbastanteos!=null)
+			return olistbastanteos;
+		else
+			return null;
 	}
 }

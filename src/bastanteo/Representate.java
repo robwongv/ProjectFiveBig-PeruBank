@@ -2,12 +2,15 @@ package bastanteo;
 
 public class Representate {
 
+	
 	private String tipoDocumento;
 	private String numeroDocumento;
 	private String nombres;
 	private String apellidos;
 	private String cargoEmpresa;
 	private String grupoBastanteo;
+	private String codigoCliente;
+	
 
 	public void setTipoDocumento(String tipoDocumento) {
 		this.tipoDocumento = tipoDocumento;
@@ -57,9 +60,13 @@ public class Representate {
 		return grupoBastanteo;
 	}
 
+	public String getCodigoCliente() {
+		return codigoCliente;
+	}
+	
 	public Representate(String tipoDocumento, String numeroDocumento,
 			String nombres, String apellidos, String cargoEmpresa,
-			String grupoBastanteo) {
+			String grupoBastanteo,String codigoCliente) {
 		// TODO Auto-generated constructor stub
 		this.tipoDocumento = tipoDocumento;
 		this.numeroDocumento = numeroDocumento;
@@ -67,6 +74,8 @@ public class Representate {
 		this.apellidos = apellidos;
 		this.cargoEmpresa = cargoEmpresa;
 		this.grupoBastanteo = grupoBastanteo;
+		this.codigoCliente = codigoCliente;
+ 
 	}
 
 	public Representate() {

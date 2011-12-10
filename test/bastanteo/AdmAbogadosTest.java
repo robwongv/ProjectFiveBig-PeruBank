@@ -13,12 +13,12 @@ public class AdmAbogadosTest {
 	String apellidos="Wong Villar";
 	String cargoEmpresa="Analista Sistema";
 	String grupoBastanteo="A";	
-		
+    String codigoCliente="CL001";		
 	AdmAbogados oAdmAbogados=new AdmAbogados();
 	
-	oAdmAbogados.inscribirRepresentate(tipoDocumento,numeroDocumento,nombres,apellidos,cargoEmpresa,grupoBastanteo);
+	oAdmAbogados.inscribirRepresentate(tipoDocumento,numeroDocumento,nombres,apellidos,cargoEmpresa,grupoBastanteo,codigoCliente);
 	
-	Representate oRepresentate = oAdmAbogados.buscarRepresentante(numeroDocumento);
+	Representate oRepresentate = oAdmAbogados.buscarRepresentante(tipoDocumento, numeroDocumento, codigoCliente);
 	
 	assertNotNull(oRepresentate);	 
 	}
@@ -31,10 +31,10 @@ public class AdmAbogadosTest {
 	String apellidos="Wong Villar";
 	String cargoEmpresa="Analista Sistema";
 	String grupoBastanteo="A";
-		
+    String codigoCliente="CL001";		
 	AdmAbogados oAdmAbogados=new AdmAbogados();
 	
-	oAdmAbogados.inscribirRepresentate(tipoDocumento,numeroDocumento,nombres,apellidos,cargoEmpresa,grupoBastanteo);
+	oAdmAbogados.inscribirRepresentate(tipoDocumento,numeroDocumento,nombres,apellidos,cargoEmpresa,grupoBastanteo,codigoCliente);
 	
 	}
 	@Test(expected=RepresentanteException.class)
@@ -45,12 +45,13 @@ public class AdmAbogadosTest {
 	String apellidos="Wong Villar";
 	String cargoEmpresa="Analista Sistema";
 	String grupoBastanteo="A";
-		
+	String codigoCliente="CL001";
+
 	AdmAbogados oAdmAbogados=new AdmAbogados();
 	
-	oAdmAbogados.inscribirRepresentate(tipoDocumento,numeroDocumento,nombres,apellidos,cargoEmpresa,grupoBastanteo);
+	oAdmAbogados.inscribirRepresentate(tipoDocumento,numeroDocumento,nombres,apellidos,cargoEmpresa,grupoBastanteo,codigoCliente);
 	
-	oAdmAbogados.inscribirRepresentate(tipoDocumento,numeroDocumento,nombres,apellidos,cargoEmpresa,grupoBastanteo);	
+	oAdmAbogados.inscribirRepresentate(tipoDocumento,numeroDocumento,nombres,apellidos,cargoEmpresa,grupoBastanteo,codigoCliente);	
 		 
 	}
 }

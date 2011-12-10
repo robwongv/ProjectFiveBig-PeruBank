@@ -1,5 +1,6 @@
 package bastanteo;
 
+import java.util.Calendar;
 import java.util.List;
 
 public class Bastanteo {
@@ -10,10 +11,10 @@ public class Bastanteo {
 	private String tipoIntervencion;
 	private List<Grupo> grupos;
 	private double importe;
-	private String fechaVencimiento;
+	private Calendar fechaVencimiento;
 
 	public Bastanteo(String codigoBastanteo,List<Poder> poderes,String grupo, String codigoCliente
-			,String tipoIntervencion,List<Grupo> grupos,double importe,String fechaVencimiento) {
+			,String tipoIntervencion,List<Grupo> grupos,double importe,Calendar fechaVencimiento) {
 		super();  
 		this.codigoBastanteo=codigoBastanteo;
 		this.poderes = poderes;
@@ -53,7 +54,7 @@ public class Bastanteo {
 		return importe;
 	}
 
-	public String getFechaVencimiento() {
+	public Calendar getFechaVencimiento() {
 		return fechaVencimiento;
 	}
 	

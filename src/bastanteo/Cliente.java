@@ -8,10 +8,7 @@ public class Cliente {
 	private String fechaInicio;
 	private String tipoEmpresa;
 	private int empleados;
-	//se va aagregar un atributo / para la pc2 05/12/2011
-	private int edad;
-	private String sexo; //agregado a la 05/12/2011 08:50 pm
-	
+
 	public Cliente(String codigo, String ruc, String razonSocial,
 			String fechaInicio, String tipoEmpresa, int empleados) {
 		super();  //el super siempre va en primer lugar

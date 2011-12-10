@@ -11,8 +11,7 @@ public class AdmClientes {
 	//2do. En el constructor inicializo
 	public AdmClientes(){
 		clientes = new ArrayList<Cliente>();
-	}
-	
+	}	
 	
 	public void registrarCliente(String codigo, String ruc, String razonSocial,
 			String fechaInicio, String tipoEmpresa, int empleados) 
@@ -81,5 +80,13 @@ public class AdmClientes {
                 return cliente;
         return null;
 	}
+	
+	public Cliente buscarClienteRuc(String ruc) {
+        for(Cliente cliente : clientes)
+            if (cliente.getCodigo().equals(ruc))
+                return cliente;
+        return null;
+	}
+	
 
 }
